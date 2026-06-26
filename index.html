@@ -5,6 +5,8 @@
   <meta charset="UTF-8">
   <link rel="stylesheet" href="style.css">
    <script async src="https://www.googletagmanager.com/gtag/js?id=G-PXHK7Q7G3Z"></script>
+   <title>DELTARUNE</title>
+<link rel="icon" type="image/x-icon" href="https://cdn.cloudflare.steamstatic.com/steamcommunity/public/images/apps/1671210/4ae0c6c7805c502bf0bac95df98997ee7d442903.ico">
 <script>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
@@ -29,50 +31,82 @@
 }
 </style>
 </head>
+<head>
+  <style>
+    .large-text {
+      font-size: 0.9rem;
+    }
+  </style>
+  <style>
+    .sub-text {
+      font-size: 0.9rem;
+	  opacity: 0.7;
+    }
+  </style>
+  <style>
+    .bar {
+      background-image: url('icons/spr_vertBar_0.png');
+	  width: 800px;
+	  height: 2;
+    }
+  </style>
+</head>
 <body>
-  <div class="logo-container">
-    <img src="logo.png" alt="Logo" class="logo">
-  </div>
-  
+
   <div class="menu">
     <a href="javascript:loadChapter(1)" class="row">
       <span class="chapter">Chapter 1</span>
       <span class="title">The Beginning</span>
       <img src="icons/1.png">
     </a>
+	<div class="bar"></div>
     <a href="javascript:loadChapter(2)" class="row">
       <span class="chapter">Chapter 2</span>
       <span class="title">A Cyber's World</span>
       <img src="icons/2.png">
     </a>
+	<div class="bar"></div>
     <a href="javascript:loadChapter(3)" class="row">
       <span class="chapter">Chapter 3</span>
       <span class="title">Late Night</span>
       <img src="icons/3.png">
     </a>
+	<div class="bar"></div>
     <a href="javascript:loadChapter(4)" class="row">
       <span class="chapter">Chapter 4</span>
       <span class="title">Prophecy</span>
       <img src="icons/4.png">
     </a>
+	<div class="bar"></div>
     <a href="javascript:loadChapter(5)" class="row">
       <span class="chapter">Chapter 5</span>
       <span class="title">Festival Day</span>
       <img src="icons/5.png">
     </a>
+	<div class="bar"></div>
     <a href="javascript:alert('Chapter 6 coming soon!')" class="disabled-row">
       <span class="chapter">Chapter 6</span>
       <span class="disabled-title">--</span>
       <img src="icons/0.png">
     </a>
+	<div class="bar"></div>
     <a href="javascript:alert('Chapter 7 coming soon!')" class="disabled-row">
       <span class="chapter">Chapter 7</span>
       <span class="disabled-title">--</span>
       <img src="icons/0.png">
     </a>
+	<a href="" class="sub-text">
+      <span class="large-text">(C) Toby Fox 2018-2026</span>
+	</a>
+	<span class="sub-text">DELTARUNE v22</span>
+	<a href="blank.html" class="row">
+      <span class="chapter">Quit</span>
+      <span class="title"></span>
+      <span class="badge"></span>
+    </a>
     <a href="javascript:window.open('https://truffled.lol', '_blank')" class="row">
       <span class="chapter"></span>
-      <span class="title">made by bog</span>
+      <span class="title">Made by bog</span>
       <span class="badge"></span>
     </a>
   </div>
@@ -199,4 +233,19 @@
       }
     });
   </script>
+  <script>
+  document.addEventListener("keydown", function(event) {
+  if (event.key.toLowerCase() === "f" || event.key === "F4") {
+    event.preventDefault();
+    
+    if (!document.fullscreenElement) {
+      document.documentElement.requestFullscreen().catch(err => {
+        console.error(`Error attempting to enable fullscreen: ${err.message}`);
+      });
+    } else {
+      document.exitFullscreen();
+    }
+  }
+});
+</script>
 </body></html>
