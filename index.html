@@ -265,19 +265,4 @@ body {
       }
     });
   </script>
-  <script>
-  document.addEventListener("keydown", function(event) {
-  if (event.key.toLowerCase() === "f" || event.key === "F4") {
-    event.preventDefault();
-    
-    if (!document.fullscreenElement) {
-      document.documentElement.requestFullscreen().catch(err => {
-        console.error(`Error attempting to enable fullscreen: ${err.message}`);
-      });
-    } else {
-      document.exitFullscreen();
-    }
-  }
-});
-</script>
 </body></html>
