@@ -14,6 +14,11 @@ body {
   font-size: 32px;
   letter-spacing: 0.5px;
   -webkit-font-smoothing: antialiased;
+  cursor: url("IMAGE_SOUL_BLUR_0.png"), auto;
+}
+
+a, button {
+  cursor: url("IMAGE_SOUL_BLUR_0.png"), pointer;
 }
 
 .stretched-text {
