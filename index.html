@@ -1,4 +1,6 @@
-<html><head> 
+<!DOCTYPE html>
+<html lang="en">
+<head> 
 <meta charset="UTF-8"> 
 <link rel="stylesheet" href="style.css"> 
 <script async src="https://googletagmanager.com"></script> 
@@ -60,6 +62,92 @@ body {
 .cinematic-gate.active {
   transform: translateX(0);
 }
+
+
+.idb-stars {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0px;
+  margin-left: 0px;
+  vertical-align: middle;
+}
+
+
+.chapter {
+  display: inline !important;
+}
+
+.idb-star {
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAICAYAAADA+m62AAAANElEQVQY02NgQAP//zP8//+f4T+6OBMDkYARm25sgHgTkd2GVQEjRA1pJiKbBjMBXYxoEwFmdhIDUIsQAAAAAABJRU5ErkJggg==');
+  background-size: contain;
+  background-repeat: no-repeat;
+  image-rendering: pixelated;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  flex-shrink: 0;
+}
+
+.idb-star.visible {
+  opacity: 1;
+}
+
+
+#continueScreen {
+  position: fixed;
+  inset: 0;
+  background: #000;
+  z-index: 99999;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.000em;
+  opacity: 1;
+  transition: opacity 0.6s ease;
+}
+
+#continueScreen.fade-out {
+  opacity: 0;
+  pointer-events: none;
+}
+
+#continueScreen .cs-message {
+  color: #fff;
+  font-size: 3.4rem;
+  text-align: center;
+  line-height: 3.9;
+  white-space: pre-line;
+}
+
+#continueScreen .cs-buttons {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.1em;
+}
+
+#continueScreen .cs-btn {
+  background: none;
+  border: none;
+  color: #fff;
+  font-size: 3.1rem;
+  cursor: pointer;
+  padding: 0.2em 0.5em;
+  font-family: inherit;
+  text-align: left;
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+  transition: color 0.1s;
+}
+
+#continueScreen .cs-btn.selected {
+  color: #ffff00;
+}
 </style> 
 </head> 
 <head> 
@@ -70,7 +158,7 @@ body {
 .sub-text { font-size: 0.9rem; opacity: 0.7; } 
 </style> 
 <style> 
-.bar { background-image: url('icons/spr_vertBar_0.png'); width: 800px; height: 2px; } 
+.bar { background-image: url('icons/spr_vertBar_0.png'); width: calc(100% + 60px); height: 2px; margin-left: -30px;} 
 </style> 
 </head> 
 <audio id="ch4" src="audios/ch4_select.mp3"></audio>
@@ -79,38 +167,49 @@ body {
 <audio id="ch3" src="audios/ch3_select.mp3"></audio>
 <audio id="ch5" src="audios/ch5_select.mp3"></audio>
 <body> 
+
+ <div id="continueScreen">
+   <div class="cs-message" id="csMessage"></div>
+   <div class="cs-buttons" id="csButtons"></div>
+ </div>
+
  <div id="leftGate" class="cinematic-gate left"></div>
  <div id="rightGate" class="cinematic-gate right"></div>
 
  <div id="menuContainer" class="menu"> 
- <a href="javascript:loadChapter(1)" onclick="document.getElementById('ch1').play();" class="row"> 
+ <a href="javascript:loadChapter(1)" onclick="document.getElementById('ch1').play();" class="row" data-chapter="1"> 
  <span class="chapter">Chapter 1</span> 
  <span class="title">The Beginning</span> 
  <img src="icons/1.png"> 
+ <span class="badge"></span>
  </a> 
  <div class="bar"></div> 
- <a href="javascript:loadChapter(2)" onclick="document.getElementById('ch2').play();" class="row"> 
+ <a href="javascript:loadChapter(2)" onclick="document.getElementById('ch2').play();" class="row" data-chapter="2"> 
  <span class="chapter">Chapter 2</span> 
  <span class="title">A Cyber's World</span> 
  <img src="icons/2.png"> 
+ <span class="badge"></span>
  </a> 
  <div class="bar"></div> 
- <a href="javascript:loadChapter(3)" onclick="document.getElementById('ch3').play();" class="row"> 
+ <a href="javascript:loadChapter(3)" onclick="document.getElementById('ch3').play();" class="row" data-chapter="3"> 
  <span class="chapter">Chapter 3</span> 
  <span class="title">Late Night</span> 
  <img src="icons/3.png"> 
+ <span class="badge"></span>
  </a> 
  <div class="bar"></div> 
- <a href="javascript:loadChapter(4)" onclick="document.getElementById('ch4').play();" class="row"> 
+ <a href="javascript:loadChapter(4)" onclick="document.getElementById('ch4').play();" class="row" data-chapter="4"> 
  <span class="chapter">Chapter 4</span> 
  <span class="title">Prophecy</span> 
  <img src="icons/4.png"> 
+ <span class="badge"></span>
  </a> 
  <div class="bar"></div> 
- <a href="javascript:loadChapter(5)" onclick="document.getElementById('ch5').play();" class="row"> 
+ <a href="javascript:loadChapter(5)" onclick="document.getElementById('ch5').play();" class="row" data-chapter="5"> 
  <span class="chapter">Chapter 5</span> 
  <span class="title">Festival Day</span> 
  <img src="icons/5.png"> 
+ <span class="badge"></span>
  </a> 
  <div class="bar"></div> 
  <a href="javascript:alert('Chapter 6 coming soon!')" class="disabled-row"> 
@@ -204,65 +303,348 @@ body {
    } 
  } 
 
+ document.querySelectorAll('.row').forEach(row => {
+   row.addEventListener('mouseenter', () => {
+     if (!gamestarted) {
+       playSound(menumoveaudio);
+       if (selectedChapter) {
+         document.querySelectorAll('.row')[selectedChapter].classList.remove("selected");
+       }
+     }
+   });
+   row.addEventListener('click', () => {
+     if (!gamestarted) {
+       playSound(menuselectaudio);
+     }
+   });
+ });
 
-    document.querySelectorAll('.row').forEach(row => {
-      row.addEventListener('mouseenter', () => {
-        if (!gamestarted) {
-          playSound(menumoveaudio);
-          if (selectedChapter) {
-            document.querySelectorAll('.row')[selectedChapter].classList.remove("selected");
-          }
-        }
-      });
-      row.addEventListener('click', () => {
-        if (!gamestarted) {
-          playSound(menuselectaudio);
-        }
-      });
-    });
+ let selectedChapter = null;
+ document.addEventListener('keydown', function(event) {
+   if (!gamestarted) {
+     if (event.key === 'ArrowUp') {
+       if (selectedChapter === null) {
+         selectedChapter = 0;
+         document.querySelectorAll('.row')[0].classList.add("selected");
+         playSound(menumoveaudio);
+       } else {
+         document.querySelectorAll('.row')[selectedChapter].classList.remove("selected");
+         selectedChapter--;
+         if (selectedChapter < 0) {
+           selectedChapter = document.querySelectorAll('.row').length - 1;
+         }
+         document.querySelectorAll('.row')[selectedChapter].classList.add("selected");
+         playSound(menumoveaudio);
+       }
+     } else if (event.key === 'ArrowDown') {
+       if (selectedChapter === null) {
+         selectedChapter = 0;
+         document.querySelectorAll('.row')[0].classList.add("selected");
+         playSound(menumoveaudio);
+       } else {
+         if (selectedChapter+1 >= document.querySelectorAll('.row').length) {
+           document.querySelectorAll('.row')[selectedChapter].classList.remove("selected");
+           selectedChapter = 0;
+           document.querySelectorAll('.row')[0].classList.add("selected");
+           playSound(menumoveaudio);
+         } else {
+           document.querySelectorAll('.row')[selectedChapter].classList.remove("selected");
+           selectedChapter++;
+           document.querySelectorAll('.row')[selectedChapter].classList.add("selected");
+           playSound(menumoveaudio);
+         }
+       }
+     } else if (event.key === 'Enter') {
+       if (selectedChapter !== null) {
+         window.location.href = document.querySelectorAll('.row')[selectedChapter].href;
+         playSound(menuselectaudio);
+       }
+     }
+   }
+ });
+ </script>
+ <script>
+ (function() {
+   const IDB_NAME  = '/_savedata';
+   const IDB_STORE = 'FILE_DATA';
+   const CHAPTERS  = [1, 2, 3, 4, 5]; // update when 6 releases
 
-    let selectedChapter = null;
-    document.addEventListener('keydown', function(event) {
-      if (!gamestarted) {
-      if (event.key === 'ArrowUp') {
-        if (selectedChapter === null) {
-          selectedChapter = 0;
-          document.querySelectorAll('.row')[0].classList.add("selected");
-          playSound(menumoveaudio);
-        } else {
-          document.querySelectorAll('.row')[selectedChapter].classList.remove("selected");
-          selectedChapter--;
-          if (selectedChapter < 0) {
-            selectedChapter = document.querySelectorAll('.row').length - 1;
-          }
-          document.querySelectorAll('.row')[selectedChapter].classList.add("selected");
-          playSound(menumoveaudio);
-        }
-      } else if (event.key === 'ArrowDown') {
-        if (selectedChapter === null) {
-          selectedChapter = 0;
-          document.querySelectorAll('.row')[0].classList.add("selected");
-          playSound(menumoveaudio);
-        } else {
-          if (selectedChapter+1 >= document.querySelectorAll('.row').length) {
-            document.querySelectorAll('.row')[selectedChapter].classList.remove("selected");
-            selectedChapter = 0;
-            document.querySelectorAll('.row')[0].classList.add("selected");
-            playSound(menumoveaudio);
-          } else {
-            document.querySelectorAll('.row')[selectedChapter].classList.remove("selected");
-            selectedChapter++;
-            document.querySelectorAll('.row')[selectedChapter].classList.add("selected");
-            playSound(menumoveaudio);
-          }
-        }
-      } else if (event.key === 'Enter') {
-        if (selectedChapter !== null) {
-          window.location.href = document.querySelectorAll('.row')[selectedChapter].href;
-          playSound(menuselectaudio);
-        }
-      }
-      }
-    });
-  </script>
-</body></html>
+   
+   const ALL_SLOTS = [0, 1, 2, 3, 4, 5, 9];
+   const COMPLETE_TIERS = [[0,3,9],[1,4,9],[2,5,9]];
+
+   function openDB() {
+     return new Promise((resolve, reject) => {
+       const req = indexedDB.open(IDB_NAME);
+       req.onsuccess = e => resolve(e.target.result);
+       req.onerror   = e => reject(e.target.error);
+     });
+   }
+
+   function getAllKeys(db) {
+     return new Promise((resolve, reject) => {
+       const tx  = db.transaction(IDB_STORE, 'readonly');
+       const req = tx.objectStore(IDB_STORE).getAllKeys();
+       req.onsuccess = e => resolve(new Set(e.target.result.map(String)));
+       req.onerror   = e => reject(e.target.error);
+     });
+   }
+
+   function hasAnyFile(ch, foundSet) {
+     return ALL_SLOTS.some(s => foundSet.has(`/_savedata/filech${ch}_${s}`));
+   }
+
+   function isCompleted(ch, foundSet) {
+     return [0, 3, 9].every(s => foundSet.has(`/_savedata/filech${ch}_${s}`));
+   }
+
+   function dismissScreen() {
+     const screen = document.getElementById('continueScreen');
+     screen.classList.add('fade-out');
+     
+     const drone = document.getElementById('drone');
+     if (drone) drone.play().catch(() => {});
+     setTimeout(() => screen.remove(), 650);
+   }
+
+   function playChapterAudio(ch) {
+     const id = `ch${ch}`;
+     const el = document.getElementById(id);
+     if (el) { el.currentTime = 0; el.play().catch(() => {}); }
+   }
+
+   function buildScreen(ch, completed) {
+     const msg     = document.getElementById('csMessage');
+     const buttons = document.getElementById('csButtons');
+     const nextCh  = ch + 1;
+
+     if (completed) {
+       msg.textContent = `Chapter ${ch} was completed.`;
+       
+       const btnPlay = document.createElement('button');
+       btnPlay.className = 'cs-btn selected';
+       btnPlay.textContent = `Play Chapter ${nextCh}`;
+       btnPlay.addEventListener('mouseenter', () => setSelected(btnPlay));
+       btnPlay.addEventListener('click', () => {
+         playChapterAudio(nextCh);
+         setTimeout(() => { loadChapter(nextCh); dismissScreen(); }, 80);
+       });
+
+       const btnSelect = document.createElement('button');
+       btnSelect.className = 'cs-btn';
+       btnSelect.textContent = 'Chapter Select';
+       btnSelect.addEventListener('mouseenter', () => setSelected(btnSelect));
+       btnSelect.addEventListener('click', () => {
+         playSound(menuselectaudio);
+         dismissScreen();
+       });
+
+       buttons.appendChild(btnPlay);
+       buttons.appendChild(btnSelect);
+       setupKeyboard([btnPlay, btnSelect]);
+     } else {
+       msg.textContent = `Continue from Chapter ${ch}?`;
+       
+       const btnYes = document.createElement('button');
+       btnYes.className = 'cs-btn selected';
+       btnYes.textContent = 'Yes';
+       btnYes.addEventListener('mouseenter', () => setSelected(btnYes));
+       btnYes.addEventListener('click', () => {
+         playChapterAudio(ch);
+         setTimeout(() => { loadChapter(ch); dismissScreen(); }, 80);
+       });
+
+       const btnNo = document.createElement('button');
+       btnNo.className = 'cs-btn';
+       btnNo.textContent = 'No';
+       btnNo.addEventListener('mouseenter', () => setSelected(btnNo));
+       btnNo.addEventListener('click', () => {
+         playSound(menuselectaudio);
+         dismissScreen();
+       });
+
+       buttons.appendChild(btnYes);
+       buttons.appendChild(btnNo);
+       setupKeyboard([btnYes, btnNo]);
+     }
+   }
+
+   function setSelected(activeBtn) {
+     document.querySelectorAll('#continueScreen .cs-btn').forEach(b => b.classList.remove('selected'));
+     activeBtn.classList.add('selected');
+     playSound(menumoveaudio);
+   }
+
+   function setupKeyboard(btns) {
+     let idx = 0;
+     function move(dir) {
+       idx = (idx + dir + btns.length) % btns.length;
+       document.querySelectorAll('#continueScreen .cs-btn').forEach(b => b.classList.remove('selected'));
+       btns[idx].classList.add('selected');
+       playSound(menumoveaudio);
+     }
+     document.addEventListener('keydown', function csKey(e) {
+       if (!document.getElementById('continueScreen')) {
+         document.removeEventListener('keydown', csKey);
+         return;
+       }
+       if (e.key === 'ArrowDown') move(1);
+       else if (e.key === 'ArrowUp') move(-1);
+       else if (e.key === 'Enter' || e.key === 'z' || e.key === 'Z') btns[idx].click();
+     });
+   }
+
+   async function initContinueScreen() {
+     
+     const drone = document.getElementById('drone');
+     if (drone) drone.pause();
+     try {
+       const db       = await openDB();
+       const foundSet = await getAllKeys(db);
+       db.close();
+
+       
+       let continueCh = null;
+       for (const ch of CHAPTERS) {
+         if (!isCompleted(ch, foundSet)) {
+           if (hasAnyFile(ch, foundSet)) continueCh = ch;
+           break;
+         }
+       }
+
+       if (continueCh !== null) {
+         
+         buildScreen(continueCh, false);
+         return;
+       }
+
+       
+       // update max chapter when chapter 6 is out
+       const MAX_CHAPTER = 5;
+       const allDone = CHAPTERS.every(ch => isCompleted(ch, foundSet));
+       if (allDone) {
+         const lastCh = CHAPTERS[CHAPTERS.length - 1];
+         if (lastCh >= MAX_CHAPTER) {
+           
+           dismissScreen();
+           return;
+         }
+         buildScreen(lastCh, true);
+         return;
+       }
+
+       
+       dismissScreen();
+     } catch (err) {
+       console.warn('[Continue screen]', err);
+       dismissScreen();
+     }
+   }
+
+   if (document.readyState === 'loading') {
+     document.addEventListener('DOMContentLoaded', initContinueScreen);
+   } else {
+     initContinueScreen();
+   }
+ })();
+ </script>
+ <script>
+ (function() {
+   const IDB_NAME  = '/_savedata';
+   const IDB_STORE = 'FILE_DATA';
+
+   
+   const TIERS = [
+     [0, 3, 9],  
+     [1, 4, 9],  
+     [2, 5, 9],  
+   ];
+
+   
+   const STAR_SRC = 'spr_ui_star_1.png';
+
+   function openDB() {
+     return new Promise((resolve, reject) => {
+       const req = indexedDB.open(IDB_NAME);
+       req.onsuccess = e => resolve(e.target.result);
+       req.onerror   = e => reject(e.target.error);
+     });
+   }
+
+   function getAllKeys(db) {
+     return new Promise((resolve, reject) => {
+       const tx  = db.transaction(IDB_STORE, 'readonly');
+       const req = tx.objectStore(IDB_STORE).getAllKeys();
+       req.onsuccess = e => resolve(new Set(e.target.result.map(String)));
+       req.onerror   = e => reject(e.target.error);
+     });
+   }
+
+   
+   function countStars(ch, foundSet) {
+     let stars = 0;
+     for (const tier of TIERS) {
+       const allPresent = tier.every(slot =>
+         foundSet.has(`/_savedata/filech${ch}_${slot}`)
+       );
+       if (allPresent) stars++;
+     }
+     return stars;
+   }
+
+   function applyStars(ch, starCount) {
+     if (starCount === 0) return;
+
+     const row = document.querySelector(`.row[data-chapter="${ch}"]`);
+     if (!row) return;
+
+     
+     const chapterSpan = row.querySelector('.chapter');
+     if (!chapterSpan) return;
+
+     const container = document.createElement('span');
+     container.className = 'idb-stars';
+
+     for (let i = 0; i < starCount; i++) {
+       const star = document.createElement('span');
+       star.className = 'idb-star';
+       star.title = `${starCount} star${starCount > 1 ? 's' : ''}`;
+       container.appendChild(star);
+
+       
+       requestAnimationFrame(() => {
+         setTimeout(() => star.classList.add('visible'), i * 80);
+       });
+     }
+
+     
+     chapterSpan.appendChild(container);
+   }
+
+   async function scanIDB() {
+     try {
+       const db       = await openDB();
+       const foundSet = await getAllKeys(db);
+       db.close();
+
+       document.querySelectorAll('.row[data-chapter]').forEach(row => {
+         const ch = parseInt(row.dataset.chapter, 10);
+         if (!isNaN(ch)) {
+           applyStars(ch, countStars(ch, foundSet));
+         }
+       });
+     } catch (err) {
+       console.warn('[IDB star checker]', err);
+     }
+   }
+
+   if (document.readyState === 'loading') {
+     document.addEventListener('DOMContentLoaded', scanIDB);
+   } else {
+     scanIDB();
+   }
+ })();
+ </script>
+
+</body>
+</html>

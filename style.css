@@ -11,15 +11,12 @@ body {
   place-items: center;
   height: 100vh;
   margin: 0;
-  font-size: 32px;
+  font-size: 35px;
   letter-spacing: 0.5px;
   -webkit-font-smoothing: antialiased;
-  cursor: url("IMAGE_SOUL_BLUR_0.png"), auto;
+  white-space: nowrap;
 }
 
-a, button {
-  cursor: url("IMAGE_SOUL_BLUR_0.png"), pointer;
-}
 
 .stretched-text {
   display: inline-block;
