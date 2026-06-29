@@ -132,17 +132,6 @@ canvas.active {
     }
 }
 
-.spinner {
-    height: 30px;
-    width: 30px;
-    -webkit-animation: rotation 0.8s linear infinite;
-    -moz-animation: rotation 0.8s linear infinite;
-    -o-animation: rotation 0.8s linear infinite;
-    animation: rotation 0.8s linear infinite;
-    border: 5px solid #bdff00;
-    border-top: 5px solid #719900;
-    border-radius: 100%;
-}
 
 #status {
     display: inline-block;
@@ -540,15 +529,6 @@ progress[value]::-webkit-progress-value {
                 font-family: Blank;
             }
 
-            .spinner {
-                border: 8px solid #f3f3f3;
-                border-top: 8px solid #3498db;
-                border-radius: 50%;
-                width: 40px;
-                height: 40px;
-                animation: spin 1s linear infinite;
-                margin-bottom: 20px;
-            }
 
             @keyframes spin {
                 0% { transform: rotate(0deg); }
@@ -567,7 +547,6 @@ progress[value]::-webkit-progress-value {
 
 <body>
     <div id="loading-overlay">
-        <div class="spinner" id="spinner"></div>
         <div id="loading-log"></div>
     </div>
     <div id="game-container">
@@ -787,7 +766,6 @@ progress[value]::-webkit-progress-value {
             var bodyElement = document.getElementsByTagName("body")[0];
             var statusElement = document.getElementById("status");
             var progressElement = document.getElementById("progress");
-            var spinnerElement = document.getElementById("spinner");
             var canvasElement = document.getElementById("canvas");
             var outputElement = document.getElementById("output");
             var outputContainerElement = document.getElementById("output-container");
@@ -873,13 +851,11 @@ progress[value]::-webkit-progress-value {
                         progressElement.value = parseInt(m[2]) * 100;
                         progressElement.max = parseInt(m[4]) * 100;
                         progressElement.hidden = false;
-                        spinnerElement.hidden = false;
                     } else {
                         progressElement.value = null;
                         progressElement.max = null;
                         progressElement.hidden = true;
                         if (!text) {
-                            spinnerElement.style.display = "none";
                             canvasElement.style.display = "block";
                         }
                     }
@@ -893,7 +869,6 @@ progress[value]::-webkit-progress-value {
             };
             Module.setStatus("Downloading...");
             window.onerror = function(event) {
-                spinnerElement.style.display = "none";
                 Module.setStatus = function(text) {
                     if (text) Module.printErr("[post-exception status] " + text);
                 };
