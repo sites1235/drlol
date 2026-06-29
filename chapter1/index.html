@@ -163,19 +163,6 @@
         }
       }
 
-      .spinner {
-        height: 30px;
-        width: 30px;
-
-        -webkit-animation: rotation 0.8s linear infinite;
-        -moz-animation: rotation 0.8s linear infinite;
-        -o-animation: rotation 0.8s linear infinite;
-        animation: rotation 0.8s linear infinite;
-
-        border: 5px solid #bdff00;
-        border-top: 5px solid #719900;
-        border-radius: 100%;
-      }
 
       #status {
         display: inline-block;
@@ -367,7 +354,6 @@
         </div>
     </div>
     <div class="loading">
-      <div class="spinner" id="spinner"></div>
       <div class="emscripten" id="status">Downloading...</div>
 
       <progress value="0" max="100" id="progress" hidden="1"></progress>
@@ -403,7 +389,6 @@
       var bodyElement = document.getElementsByTagName("body")[0];
       var statusElement = document.getElementById("status");
       var progressElement = document.getElementById("progress");
-      var spinnerElement = document.getElementById("spinner");
       var canvasElement = document.getElementById("canvas");
       var outputElement = document.getElementById("output");
       var outputContainerElement = document.getElementById("output-container");
@@ -520,7 +505,6 @@
             progressElement.value = parseInt(m[2]) * 100;
             progressElement.max = parseInt(m[4]) * 100;
             progressElement.hidden = false;
-            spinnerElement.hidden = false;
           } else {
             progressElement.value = null;
             progressElement.max = null;
@@ -529,7 +513,6 @@
             // If there are no status text, we are finished and can display
             // the canvas and hide the spinner
             if (!text) {
-              spinnerElement.style.display = "none";
               canvasElement.style.display = "block";
             }
           }
@@ -553,7 +536,6 @@
       window.onerror = function (event) {
         // TODO: do not warn on ok events like simulating an infinite loop or exitStatus
         Module.setStatus("Exception thrown, see JavaScript console");
-        spinnerElement.style.display = "none";
         Module.setStatus = function (text) {
           if (text) Module.printErr("[post-exception status] " + text);
         };
