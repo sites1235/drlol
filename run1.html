@@ -5,6 +5,8 @@
 <title>DELTARUNE</title> 
 <link rel="icon" type="image/x-icon" href="https://cdn.cloudflare.steamstatic.com/steamcommunity/public/images/apps/1671210/4ae0c6c7805c502bf0bac95df98997ee7d442903.ico"> 
 <script> window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);} gtag('js', new Date()); gtag('config', 'G-PXHK7Q7G3Z'); </script> 
+
+
 <style> 
 *{ 
   -webkit-appearance: none; 
@@ -264,29 +266,39 @@ body {
   </script>
  <script>
 
-if (window.location.hash === '#loadChapter(1)') {
+document.addEventListener("DOMContentLoaded", () => {
+    if (window.location.hash === '#loadChapter(1)') {
+        
+        loadChapter(1);
+    }
+});
 
-    loadChapter(1);
-}
+document.addEventListener("DOMContentLoaded", () => {
+    if (window.location.hash === '#loadChapter(2)') {
+        
+        loadChapter(2);
+    }
+});
 
-if (window.location.hash === '#loadChapter(2)') {
+document.addEventListener("DOMContentLoaded", () => {
+    if (window.location.hash === '#loadChapter(3)') {
+        
+        loadChapter(3);
+    }
+});
 
-    loadChapter(2);
-}
+document.addEventListener("DOMContentLoaded", () => {
+    if (window.location.hash === '#loadChapter(4)') {
+        
+        loadChapter(4);
+    }
+});
 
-if (window.location.hash === 'loadChapter(3)') {
-
-    loadChapter(3);
-}
-
-if (window.location.hash === 'loadChapter(4)') {
-
-    loadChapter(4);
-}
-
-if (window.location.hash === 'loadChapter(5)') {
-
-    loadChapter(5);
-}
+document.addEventListener("DOMContentLoaded", () => {
+    if (window.location.hash === '#loadChapter(5)') {
+        
+        loadChapter(1);
+    }
+});
 </script
 </body></html>
