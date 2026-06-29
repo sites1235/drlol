@@ -1832,50 +1832,12 @@ progress[value]::-webkit-progress-value {
             };
         </script>
 <script>
- function loadChapter(chapter) { 
-   gamestarted = true; 
-   
-   const chapterPath = `chapter${chapter}/`; 
-   
-   setTimeout(() => {
-     fetch(`${chapterPath}index.html`).then(res => { 
-       if (!res.ok) { 
-         throw new Error(`Failed to load ${chapterPath}index.html`); 
-       } 
-       return res.text(); 
-     }).then(html => { 
-       const chapterDocument = new DOMParser().parseFromString(html, 'text/html'); 
-       let base = chapterDocument.querySelector('base'); 
-       if (!base) { 
-         base = chapterDocument.createElement('base'); 
-         chapterDocument.head.prepend(base); 
-       } 
-       base.href = new URL(chapterPath, window.location.href).href; 
-       document.documentElement.innerHTML = chapterDocument.documentElement.innerHTML; 
-       document.documentElement.querySelectorAll('script').forEach(oldScript => { 
-         const newScript = document.createElement('script'); 
-         if (oldScript.src) { 
-           newScript.src = oldScript.src; 
-         } else { 
-           newScript.textContent = oldScript.textContent; 
-         } 
-         document.body.appendChild(newScript); 
-       }); 
-     }).catch(error => { 
-       console.error(error); 
-       window.location.href = `${chapterPath}index.html`; 
-     }); 
-   }, 2900); 
- } 
- </script>
-<script>
-				const basePath = window.location.pathname.substring(0, window.location.pathname.lastIndexOf('/'));
                 (function() {
                     const originalLog = console.log;
                     console.log = function(...args) {
                         originalLog.apply(console, args);
                         if (args.includes("Starting Chapter 1!")) {
-                            window.gate?.go_to_page("/chapter1/index.html") || (window.location.href = basePath + "/run1.html#loadChapter(1)");
+                            window.gate?.go_to_page("/chapter1/index.html") || (window.location.href = "/chapter1/index.html");
                         }
                     };
                 })();
@@ -1884,7 +1846,7 @@ progress[value]::-webkit-progress-value {
                     console.log = function(...args) {
                         originalLog.apply(console, args);
                         if (args.includes("Starting Chapter 2!")) {
-                            window.gate?.go_to_page("/chapter2/index.html") || (window.location.href = basePath + "/run1.html#loadChapter(2)");
+                            window.gate?.go_to_page("/chapter2/index.html") || (window.location.href = "/chapter2/index.html");
                         }
                     };
                 })();
@@ -1893,7 +1855,7 @@ progress[value]::-webkit-progress-value {
                     console.log = function(...args) {
                         originalLog.apply(console, args);
                         if (args.includes("Starting Chapter 3!")) {
-                            window.gate?.go_to_page("/chapter3/index.html") || (window.location.href = basePath + "/run1.html#loadChapter(3)");
+                            window.gate?.go_to_page("/chapter3/index.html") || (window.location.href = "/chapter3/index.html");
                         }
                     };
                 })();
@@ -1902,7 +1864,7 @@ progress[value]::-webkit-progress-value {
                     console.log = function(...args) {
                         originalLog.apply(console, args);
                         if (args.includes("Starting Chapter 4!")) {
-                            window.gate?.go_to_page("/chapter4/index.html") || (window.location.href = basePath + "/run1.html#loadChapter(4)");
+                            window.gate?.go_to_page("/chapter4/index.html") || (window.location.href = "/chapter4/index.html");
                         }
                     };
                 })();
@@ -1911,7 +1873,7 @@ progress[value]::-webkit-progress-value {
                     console.log = function(...args) {
                         originalLog.apply(console, args);
                         if (args.includes("Starting Chapter 5!")) {
-                            window.gate?.go_to_page("/chapter5/index.html") || (window.location.href = basePath + "/run1.html#loadChapter(5)");
+                            window.gate?.go_to_page("/chapter5/index.html") || (window.location.href = "/chapter5/index.html");
                         }
                     };
                 })();
