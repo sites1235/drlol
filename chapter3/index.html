@@ -479,5 +479,16 @@
         }
       };
     </script>
+<script>
+ (function() {
+                    const originalLog = console.log;
+                    console.log = function(...args) {
+                        originalLog.apply(console, args);
+                        if (args.includes("Heading back to Chapter Select!")) {
+                            window.gate?.go_to_page("/index.html") || (window.location.href = "/index.html");
+                        }
+                    };
+                })();
+</script>
   </body>
 </html>
