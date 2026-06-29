@@ -163,6 +163,19 @@
         }
       }
 
+      .spinner {
+        height: 30px;
+        width: 30px;
+
+        -webkit-animation: rotation 0.8s linear infinite;
+        -moz-animation: rotation 0.8s linear infinite;
+        -o-animation: rotation 0.8s linear infinite;
+        animation: rotation 0.8s linear infinite;
+
+        border: 5px solid #bdff00;
+        border-top: 5px solid #719900;
+        border-radius: 100%;
+      }
 
       #status {
         display: inline-block;
@@ -254,7 +267,7 @@
       #messages {
         margin-left: 50px;
         color: white;
-        font-family: "Blank";
+        font-family: "Blank"
         outline: none;
         border: none;
         padding: 0;
@@ -354,6 +367,7 @@
         </div>
     </div>
     <div class="loading">
+      <div class="spinner" id="spinner"></div>
       <div class="emscripten" id="status">Downloading...</div>
 
       <progress value="0" max="100" id="progress" hidden="1"></progress>
